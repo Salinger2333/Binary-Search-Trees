@@ -11,18 +11,51 @@ class Tree {
     this.root = buildTree(array);
   }
   insert(value, node = this.root) {
+    if (node === null) {
+      return new Node(value);
+    }
     if (value > node.data) {
-      this.node.right === null
-        ? (this.node.right = new Node(value))
-        : this.insert(value, node.right);
+      node.right = this.insert(value, node.right);
+    } else {
+      node.left = this.insert(value, node.left);
     }
-    if (value < node.data) {
-      this.node.left === null
-        ? (this.node.left = new Node(value))
-        : this.insert(value, node.left);
-    }
+    return node;
+    // if (value > node.data) {
+    //   this.node.right === null
+    //     ? (this.node.right = new Node(value))
+    //     : this.insert(value, node.right);
+    // }
+    // if (value < node.data) {
+    //   this.node.left === null
+    //     ? (this.node.left = new Node(value))
+    //     : this.insert(value, node.left);
+    // }
   }
-  deleteItem(value) {}
+  #getSuccessor(cur) {
+    cur = cur.right;
+    while (cur !== null && cur.left !== null) {
+      cur = cur.left;
+    }
+    return cur;
+  }
+  // 3 solutions: non childNode, 1 childNode, 2 childNode
+  deleteItem(value, node = this.root) {
+    if (node === null) return null;
+    if (value > node.data) {
+      node.right = this.deleteItem(value, node.right);
+    } else if (value < node.data) {
+      node.left = this.deleteItem(value, node.left);
+    } else {
+      // 0/1 child
+      if (node.left === null) return node.right;
+      if (node.right === null) return node.left;
+
+      const succ = this.#getSuccessor(node);
+      node.data = succ.data;
+      node.right = this.deleteItem(succ.data, node.right);
+    }
+    return node;
+  }
 }
 // 数组去重
 function deduplication(array) {
@@ -65,3 +98,12 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 
 let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 prettyPrint(tree.root);
+tree.insert(0);
+prettyPrint(tree.root);
+tree.insert(6);
+prettyPrint(tree.root);
+tree.deleteItem(6);
+prettyPrint(tree.root);
+tree.deleteItem(4)
+prettyPrint(tree.root);
+
