@@ -56,6 +56,17 @@ class Tree {
     }
     return node;
   }
+
+  find(value, node = this.root) {
+    if (node === null) return console.log("not exsit");;
+    if (value === node.data) {
+      return prettyPrint(node);
+    } else if (value > node.data) {
+      this.find(value, node.right);
+    } else if (value < node.data) {
+      this.find(value, node.left);
+    }
+  }
 }
 // 数组去重
 function deduplication(array) {
@@ -98,12 +109,12 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 
 let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 prettyPrint(tree.root);
-tree.insert(0);
-prettyPrint(tree.root);
-tree.insert(6);
-prettyPrint(tree.root);
-tree.deleteItem(6);
-prettyPrint(tree.root);
-tree.deleteItem(4)
-prettyPrint(tree.root);
-
+// tree.insert(0);
+// prettyPrint(tree.root);
+// tree.insert(6);
+// prettyPrint(tree.root);
+// tree.deleteItem(6);
+// prettyPrint(tree.root);
+// tree.deleteItem(4);
+// prettyPrint(tree.root);
+tree.find(0);
