@@ -58,7 +58,7 @@ class Tree {
   }
 
   find(value, node = this.root) {
-    if (node === null) return console.log("not exsit");;
+    if (node === null) return console.log("not exsit");
     if (value === node.data) {
       return prettyPrint(node);
     } else if (value > node.data) {
@@ -66,6 +66,41 @@ class Tree {
     } else if (value < node.data) {
       this.find(value, node.left);
     }
+  }
+  levelOrderForEach(cb) {
+    if (typeof cb !== "function") throw new Error("NO CALLBACK FUNCTION");
+    if (this.root === null) return;
+    let queue = [];
+    queue.push(this.root);
+    while (queue.length) {
+      let cur = queue.shift();
+      cb(cur.data);
+      if (cur.left) queue.push(cur.left);
+      if (cur.right) queue.push(cur.right);
+    }
+  }
+  preOrderForEach(cb, node = this.root) {
+    if (typeof cb !== "function") throw new Error("NO CALLBACK FUNCTION");
+    if (node === null) return;
+    cb(node.data);
+    this.preOrderForEach(cb, node.left);
+    this.preOrderForEach(cb, node.right);
+  }
+  inOrderForEach(cb, node = this.root) {
+    if (typeof cb !== "function") throw new Error("NO CALLBACK FUNCTION");
+    if (node === null) return;
+
+    this.inOrderForEach(cb, node.left);
+    cb(node.data);
+    this.inOrderForEach(cb, node.right);
+  }
+  postOrderForEach(cb, node = this.root) {
+    if (typeof cb !== "function") throw new Error("NO CALLBACK FUNCTION");
+    if (node === null) return;
+
+    this.postOrderForEach(cb, node.left);
+    this.postOrderForEach(cb, node.right);
+    cb(node.data);
   }
 }
 // 数组去重
@@ -117,4 +152,6 @@ prettyPrint(tree.root);
 // prettyPrint(tree.root);
 // tree.deleteItem(4);
 // prettyPrint(tree.root);
-tree.find(0);
+// tree.find(0);
+tree.levelOrderForEach((x) => console.log(x));
+tree.inOrderForEach((x) => console.log(x))
