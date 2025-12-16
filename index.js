@@ -10,6 +10,19 @@ class Tree {
   constructor(array) {
     this.root = buildTree(array);
   }
+  insert(value, node = this.root) {
+    if (value > node.data) {
+      this.node.right === null
+        ? (this.node.right = new Node(value))
+        : this.insert(value, node.right);
+    }
+    if (value < node.data) {
+      this.node.left === null
+        ? (this.node.left = new Node(value))
+        : this.insert(value, node.left);
+    }
+  }
+  deleteItem(value) {}
 }
 // 数组去重
 function deduplication(array) {
