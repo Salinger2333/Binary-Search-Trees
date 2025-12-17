@@ -69,7 +69,7 @@ class Tree {
       return this.find(value, node.left);
     }
   }
-  
+
   levelOrderForEach(cb) {
     if (typeof cb !== "function") throw new Error("NO CALLBACK FUNCTION");
     if (this.root === null) return;
@@ -109,7 +109,9 @@ class Tree {
   height_aux(node) {
     if (node === null) return -1;
     else {
-      return 1 + Math.max(this.height_aux(node.left), this.height_aux(node.right));
+      return (
+        1 + Math.max(this.height_aux(node.left), this.height_aux(node.right))
+      );
     }
     // let leftHeight = 0,
     //   rightHeight = 0;
@@ -145,17 +147,21 @@ class Tree {
     const diff = Math.abs(
       this.height_aux(node.left) - this.height_aux(node.right)
     );
-    if(diff <=1 && this.isBalanced(node.left) && this.isBalanced(node.right)){
-      return true
+    if (
+      diff <= 1 &&
+      this.isBalanced(node.left) &&
+      this.isBalanced(node.right)
+    ) {
+      return true;
     }
-    return false
+    return false;
   }
 
-  rebalance(){
-    if(!this.isBalanced()){
-      let arr = []
-      this.inOrderForEach((n) => arr.push(n))
-      this.root = buildTree(arr)
+  rebalance() {
+    if (!this.isBalanced()) {
+      let arr = [];
+      this.inOrderForEach((n) => arr.push(n));
+      this.root = buildTree(arr);
     }
   }
 }
@@ -199,6 +205,7 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   }
 };
 
+export { Tree };
 // let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 // prettyPrint(tree.root);
 // tree.insert(0);
