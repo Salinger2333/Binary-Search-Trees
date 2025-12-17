@@ -150,6 +150,14 @@ class Tree {
     }
     return false
   }
+
+  rebalance(){
+    if(!this.isBalanced()){
+      let arr = []
+      this.inOrderForEach((n) => arr.push(n))
+      this.root = buildTree(arr)
+    }
+  }
 }
 
 // 数组去重
@@ -191,8 +199,8 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   }
 };
 
-let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-prettyPrint(tree.root);
+// let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+// prettyPrint(tree.root);
 // tree.insert(0);
 // prettyPrint(tree.root);
 // tree.insert(6);
@@ -208,3 +216,6 @@ prettyPrint(tree.root);
 // console.log(tree.depth(9));
 // tree.insert(9999)
 // console.log(tree.isBalanced());
+// tree.rebalance()
+// console.log(tree.isBalanced());
+// prettyPrint(tree.root);
