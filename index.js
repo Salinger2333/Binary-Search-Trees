@@ -58,20 +58,22 @@ class Tree {
   }
 
   find(value, node = this.root) {
-    if (node === null) return console.log("not exsit");
+    if (node === null) {
+      return null;
+    }
     if (value === node.data) {
-      return prettyPrint(node);
+      return node;
     } else if (value > node.data) {
-      this.find(value, node.right);
-    } else if (value < node.data) {
-      this.find(value, node.left);
+      return this.find(value, node.right);
+    } else {
+      return this.find(value, node.left);
     }
   }
+  
   levelOrderForEach(cb) {
     if (typeof cb !== "function") throw new Error("NO CALLBACK FUNCTION");
     if (this.root === null) return;
-    let queue = [];
-    queue.push(this.root);
+    let queue = [this.root];
     while (queue.length) {
       let cur = queue.shift();
       cb(cur.data);
@@ -79,6 +81,7 @@ class Tree {
       if (cur.right) queue.push(cur.right);
     }
   }
+
   preOrderForEach(cb, node = this.root) {
     if (typeof cb !== "function") throw new Error("NO CALLBACK FUNCTION");
     if (node === null) return;
@@ -102,7 +105,53 @@ class Tree {
     this.postOrderForEach(cb, node.right);
     cb(node.data);
   }
+
+  height_aux(node) {
+    if (node === null) return -1;
+    else {
+      return 1 + Math.max(this.height_aux(node.left), this.height_aux(node.right));
+    }
+    // let leftHeight = 0,
+    //   rightHeight = 0;
+    // if (!node.left && !node.right) return 0;
+    // if (node.left) {
+    //   leftHeight = 1 + height_aux(node.left);
+    // }
+    // if (node.right) {
+    //   rightHeight = 1 + height_aux(node.right);
+    // }
+    // return leftHeight > rightHeight ? leftHeight : rightHeight;
+  }
+  height(value) {
+    if (typeof value !== "number") throw new Error("value must be number");
+    let node = this.find(value);
+    if (node === null) throw new Error("value not found in tree");
+    return this.height_aux(node);
+  }
+
+  depth(value, node = this.root) {
+    if (node === null) return null;
+    if (value === node.data) {
+      return 0;
+    } else if (value > node.data) {
+      return 1 + this.depth(value, node.right);
+    } else if (value < node.data) {
+      return 1 + this.depth(value, node.left);
+    }
+  }
+
+  isBalanced(node = this.root) {
+    if (node === null) return true;
+    const diff = Math.abs(
+      this.height_aux(node.left) - this.height_aux(node.right)
+    );
+    if(diff <=1 && this.isBalanced(node.left) && this.isBalanced(node.right)){
+      return true
+    }
+    return false
+  }
 }
+
 // 数组去重
 function deduplication(array) {
   let newArray = [];
@@ -153,5 +202,9 @@ prettyPrint(tree.root);
 // tree.deleteItem(4);
 // prettyPrint(tree.root);
 // tree.find(0);
-tree.levelOrderForEach((x) => console.log(x));
-tree.inOrderForEach((x) => console.log(x))
+// tree.levelOrderForEach((x) => console.log(x));
+// tree.inOrderForEach((x) => console.log(x));
+// console.log(tree.height(3));
+// console.log(tree.depth(9));
+// tree.insert(9999)
+// console.log(tree.isBalanced());
